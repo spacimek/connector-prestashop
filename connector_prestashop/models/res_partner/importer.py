@@ -3,9 +3,9 @@
 
 import re
 
-from openerp import fields, _
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.unit.mapper import (
+from odoo import fields, _
+from odoo.addons.connector.queue.job import job
+from odoo.addons.connector.unit.mapper import (
     ImportMapper,
     mapping,
     only_create,
@@ -16,7 +16,7 @@ from ...unit.importer import (
     DelayedBatchImporter,
 )
 from ...backend import prestashop
-from openerp.addons.connector.unit.mapper import backend_to_m2o
+from odoo.addons.connector.unit.mapper import backend_to_m2o
 
 
 @prestashop

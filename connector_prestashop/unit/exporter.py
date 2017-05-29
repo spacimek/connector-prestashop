@@ -7,11 +7,11 @@ from contextlib import contextmanager
 import psycopg2
 
 
-from openerp import _, exceptions
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.queue.job import related_action
-from openerp.addons.connector.unit.synchronizer import Exporter
-from openerp.addons.connector.exception import RetryableJobError
+from odoo import _, exceptions
+from odoo.addons.connector.queue.job import job
+from odoo.addons.connector.queue.job import related_action
+from odoo.addons.connector.unit.synchronizer import Exporter
+from odoo.addons.connector.exception import RetryableJobError
 from .mapper import TranslationPrestashopExportMapper
 
 

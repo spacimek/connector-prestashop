@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import _, models, fields
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.unit.mapper import (
+from odoo import _, models, fields
+from odoo.addons.connector.queue.job import job
+from odoo.addons.connector.unit.mapper import (
     mapping,
     only_create,
     ImportMapper
@@ -17,7 +17,7 @@ from ...unit.importer import (
     PrestashopBaseImporter,
     TranslatableRecordImporter,
 )
-from openerp.addons.connector.unit.mapper import backend_to_m2o
+from odoo.addons.connector.unit.mapper import backend_to_m2o
 from ...unit.backend_adapter import GenericAdapter
 from ...backend import prestashop
 from ..product_image.importer import (

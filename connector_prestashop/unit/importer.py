@@ -5,13 +5,13 @@ import logging
 from contextlib import closing, contextmanager
 
 import openerp
-from openerp import _
+from odoo import _
 
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.unit.synchronizer import Importer
-from openerp.addons.connector.connector import ConnectorUnit, Binder
-from openerp.addons.connector.session import ConnectorSession
-from openerp.addons.connector.exception import (
+from odoo.addons.connector.queue.job import job
+from odoo.addons.connector.unit.synchronizer import Importer
+from odoo.addons.connector.connector import ConnectorUnit, Binder
+from odoo.addons.connector.session import ConnectorSession
+from odoo.addons.connector.exception import (
     RetryableJobError,
     FailedJobError,
 )

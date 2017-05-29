@@ -2,8 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.unit.mapper import (mapping,
+from odoo.addons.connector.queue.job import job
+from odoo.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper)
 
 from ...backend import prestashop
@@ -12,7 +12,7 @@ from ...unit.importer import PrestashopImporter
 import mimetypes
 import logging
 
-from openerp import _
+from odoo import _
 
 _logger = logging.getLogger(__name__)
 try:

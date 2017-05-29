@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp import api, fields, models
-from openerp.addons.decimal_precision import decimal_precision as dp
+from odoo import api, fields, models
+from odoo.addons.decimal_precision import decimal_precision as dp
 
 from ...unit.backend_adapter import GenericAdapter
 from ...backend import prestashop

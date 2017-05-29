@@ -5,7 +5,7 @@
 import functools
 
 import openerp.tests.common as common
-from openerp.addons.connector.session import ConnectorSession
+from odoo.addons.connector.session import ConnectorSession
 
 from contextlib import contextmanager
 from os.path import dirname, exists, join

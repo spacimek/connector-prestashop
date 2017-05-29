@@ -3,10 +3,10 @@
 
 import logging
 
-from openerp import models, fields, api, exceptions, _
+from odoo import models, fields, api, exceptions, _
 
-from openerp.addons.connector.connector import ConnectorEnvironment
-from openerp.addons.connector.session import ConnectorSession
+from odoo.addons.connector.connector import ConnectorEnvironment
+from odoo.addons.connector.session import ConnectorSession
 from ...unit.importer import import_batch, import_record
 from ...unit.auto_matching_importer import AutoMatchingImporter
 from ...unit.backend_adapter import GenericAdapter, api_handle_errors

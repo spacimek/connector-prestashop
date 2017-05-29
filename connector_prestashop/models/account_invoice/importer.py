@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp import _, fields
+from odoo import _, fields
 
-from openerp.addons.connector.exception import MappingError
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.unit.mapper import (
+from odoo.addons.connector.exception import MappingError
+from odoo.addons.connector.queue.job import job
+from odoo.addons.connector.unit.mapper import (
     mapping,
     ImportMapper,
     only_create,

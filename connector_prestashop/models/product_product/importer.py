@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import models
+from odoo import models
 
-from openerp.addons.connector.unit.backend_adapter import BackendAdapter
-from openerp.addons.connector.unit.mapper import (
+from odoo.addons.connector.unit.backend_adapter import BackendAdapter
+from odoo.addons.connector.unit.mapper import (
     mapping,
     only_create,
     ImportMapper,

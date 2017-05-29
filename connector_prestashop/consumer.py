@@ -2,8 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
-from openerp.addons.connector.event import on_record_write
-from openerp.addons.connector_ecommerce.models.event import (
+from odoo.addons.connector.event import on_record_write
+from odoo.addons.connector_ecommerce.models.event import (
     on_tracking_number_added,
 )
 from .models.product_template.exporter import export_inventory

@@ -3,10 +3,10 @@
 
 import logging
 
-from openerp.addons.connector.connector import ConnectorUnit
-from openerp.addons.connector.unit.backend_adapter import BackendAdapter
+from odoo.addons.connector.connector import ConnectorUnit
+from odoo.addons.connector.unit.backend_adapter import BackendAdapter
 
-from openerp import _, exceptions
+from odoo import _, exceptions
 
 _logger = logging.getLogger(__name__)
 

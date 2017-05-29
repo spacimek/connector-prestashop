@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import _, fields
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.connector import ConnectorUnit
-from openerp.addons.connector.exception import FailedJobError, NothingToDoJob
-from openerp.addons.connector.unit.mapper import ImportMapper, mapping
-from openerp.addons.connector_ecommerce.unit.sale_order_onchange import (
+from odoo import _, fields
+from odoo.addons.connector.queue.job import job
+from odoo.addons.connector.connector import ConnectorUnit
+from odoo.addons.connector.exception import FailedJobError, NothingToDoJob
+from odoo.addons.connector.unit.mapper import ImportMapper, mapping
+from odoo.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange,
 )
 from ...unit.backend_adapter import GenericAdapter

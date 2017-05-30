@@ -2,11 +2,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+from contextlib import contextmanager
 
 from odoo import models, fields, api, exceptions, _
 
 from odoo.addons.connector.connector import ConnectorEnvironment
-from odoo.addons.connector.session import ConnectorSession
+from odoo.addons.connector.connector import ConnectorEnvironment
 from ...unit.importer import import_batch, import_record
 from ...unit.auto_matching_importer import AutoMatchingImporter
 from ...unit.backend_adapter import GenericAdapter, api_handle_errors
@@ -120,25 +121,24 @@ class PrestashopBackend(models.Model):
     def _default_pricelist_id(self):
         return self.env['product.pricelist'].search([], limit=1)
 
+    @contextmanager
     @api.multi
-    def get_environment(self, model_name, session=None):
+    def get_environment(self, model_name,):
         self.ensure_one()
-        if not session:
-            session = ConnectorSession.from_env(self.env)
-        return ConnectorEnvironment(self, session, model_name)
+        yield ConnectorEnvironment(self, self.env, model_name)
 
     @api.multi
     def synchronize_metadata(self):
-        session = ConnectorSession.from_env(self.env)
         for backend in self:
-            for model in [
+            for model_name in [
                 'prestashop.shop.group',
                 'prestashop.shop'
             ]:
                 # import directly, do not delay because this
                 # is a fast operation, a direct return is fine
                 # and it is simpler to import them sequentially
-                import_batch(session, model, backend.id)
+                env = backend.get_environment(model_name)
+                import_batch(env, model_name, backend.id)
         return True
 
     @api.multi
@@ -151,7 +151,7 @@ class PrestashopBackend(models.Model):
                 'prestashop.res.currency',
                 'prestashop.account.tax',
             ]:
-                env = backend.get_environment(model_name, session=session)
+                env = backend.get_environment(model_name)
                 importer = env.get_connector_unit(AutoMatchingImporter)
                 importer.run()
 
@@ -174,11 +174,11 @@ class PrestashopBackend(models.Model):
 
     @api.multi
     def import_customers_since(self):
-        session = ConnectorSession.from_env(self.env)
         for backend_record in self:
+            connector_env = ConnectorEnvironment(backend_record, 'res.partner')
             since_date = backend_record.import_partners_since
             import_customers_since.delay(
-                session,
+                connector_env,
                 backend_record.id,
                 since_date=since_date,
                 priority=10,

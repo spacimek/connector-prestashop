@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models
-from odoo.addons.decimal_precision import decimal_precision as dp
+from odoo.addons import decimal_precision as dp
 
 from ...unit.backend_adapter import GenericAdapter
 from ...backend import prestashop

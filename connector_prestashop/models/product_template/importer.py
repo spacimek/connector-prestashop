@@ -17,7 +17,7 @@ from ...unit.importer import (
     PrestashopBaseImporter,
     TranslatableRecordImporter,
 )
-from odoo.addons.connector.unit.mapper import backend_to_m2o
+from odoo.addons.connector.unit.mapper import external_to_m2o
 from ...unit.backend_adapter import GenericAdapter
 from ...backend import prestashop
 from ..product_image.importer import (
@@ -53,7 +53,7 @@ class TemplateMapper(ImportMapper):
         ('weight', 'weight'),
         ('wholesale_price', 'wholesale_price'),
         ('wholesale_price', 'standard_price'),
-        (backend_to_m2o('id_shop_default'), 'default_shop_id'),
+        (external_to_m2o('id_shop_default'), 'default_shop_id'),
         ('link_rewrite', 'link_rewrite'),
         ('reference', 'reference'),
         ('available_for_order', 'available_for_order'),

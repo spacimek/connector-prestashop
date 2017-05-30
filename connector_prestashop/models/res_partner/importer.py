@@ -16,7 +16,7 @@ from ...unit.importer import (
     DelayedBatchImporter,
 )
 from ...backend import prestashop
-from odoo.addons.connector.unit.mapper import backend_to_m2o
+from odoo.addons.connector.unit.mapper import external_to_m2o
 
 
 @prestashop
@@ -31,9 +31,9 @@ class PartnerImportMapper(ImportMapper):
         ('company', 'company'),
         ('active', 'active'),
         ('note', 'comment'),
-        (backend_to_m2o('id_shop_group'), 'shop_group_id'),
-        (backend_to_m2o('id_shop'), 'shop_id'),
-        (backend_to_m2o('id_default_group'), 'default_category_id'),
+        (external_to_m2o('id_shop_group'), 'shop_group_id'),
+        (external_to_m2o('id_shop'), 'shop_id'),
+        (external_to_m2o('id_default_group'), 'default_category_id'),
     ]
 
     @mapping
@@ -150,7 +150,7 @@ class AddressImportMapper(ImportMapper):
         ('postcode', 'zip'),
         ('date_add', 'date_add'),
         ('date_upd', 'date_upd'),
-        (backend_to_m2o('id_customer'), 'prestashop_partner_id'),
+        (external_to_m2o('id_customer'), 'prestashop_partner_id'),
     ]
 
     @mapping

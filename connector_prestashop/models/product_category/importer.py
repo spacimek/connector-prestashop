@@ -4,7 +4,7 @@
 from odoo import _
 from odoo.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper)
-from odoo.addons.connector.unit.mapper import backend_to_m2o
+from odoo.addons.connector.unit.mapper import external_to_m2o
 from ...unit.importer import TranslatableRecordImporter, DelayedBatchImporter
 from ...backend import prestashop
 
@@ -28,7 +28,7 @@ class ProductCategoryMapper(ImportMapper):
         ('meta_description', 'meta_description'),
         ('meta_keywords', 'meta_keywords'),
         ('meta_title', 'meta_title'),
-        (backend_to_m2o('id_shop_default'), 'default_shop_id'),
+        (external_to_m2o('id_shop_default'), 'default_shop_id'),
         ('active', 'active'),
         ('position', 'position')
     ]

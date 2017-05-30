@@ -4,7 +4,7 @@
 from odoo import _, fields
 from odoo.addons.queue_job.job import job
 from odoo.addons.connector.connector import ConnectorUnit
-from odoo.addons.connector.exception import FailedJobError, NothingToDoJob
+from odoo.addons.queue_job.exception import FailedJobError, NothingToDoJob
 from odoo.addons.connector.unit.mapper import ImportMapper, mapping
 from odoo.addons.connector_ecommerce.unit.sale_order_onchange import (
     SaleOrderOnChange,

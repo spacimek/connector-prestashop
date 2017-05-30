@@ -4,14 +4,14 @@
 import logging
 from contextlib import closing, contextmanager
 
-import openerp
+import odoo
 from odoo import _
 
 from odoo.addons.queue_job.job import job
 from odoo.addons.connector.unit.synchronizer import Importer
 from odoo.addons.connector.connector import ConnectorUnit, Binder
-from odoo.addons.connector.session import ConnectorSession
-from odoo.addons.connector.exception import (
+from odoo.addons.connector.connector import ConnectorEnvironment
+from odoo.addons.queue_job.exception import (
     RetryableJobError,
     FailedJobError,
 )
@@ -153,18 +153,16 @@ class PrestashopImporter(PrestashopBaseImporter):
         This can be used to make a preemptive check in a new transaction,
         for instance to see if another transaction already made the work.
         """
-        with openerp.api.Environment.manage():
-            registry = openerp.modules.registry.RegistryManager.get(
+        with odoo.api.Environment.manage():
+            registry = odoo.modules.registry.RegistryManager.get(
                 self.env.cr.dbname
             )
             with closing(registry.cursor()) as cr:
                 try:
-                    new_env = openerp.api.Environment(cr, self.env.uid,
+                    new_env = odoo.api.Environment(cr, self.env.uid,
                                                       self.env.context)
-                    new_connector_session = ConnectorSession.from_env(new_env)
                     connector_env = self.connector_env.create_environment(
                         self.backend_record.with_env(new_env),
-                        new_connector_session,
                         model_name or self.model._name,
                         connector_env=self.connector_env
                     )
@@ -499,19 +497,14 @@ class TranslatableRecordImporter(PrestashopImporter):
 
 
 @job(default_channel='root.prestashop')
-def import_batch(session, model_name, backend_id, filters=None, **kwargs):
+def import_batch(env, model_name, backend_id, filters=None, **kwargs):
     """ Prepare a batch import of records from PrestaShop """
-    backend = session.env['prestashop.backend'].browse(backend_id)
-    env = backend.get_environment(model_name, session=session)
     importer = env.get_connector_unit(BatchImporter)
     return importer.run(filters=filters, **kwargs)
 
 
 @job(default_channel='root.prestashop')
-def import_record(
-        session, model_name, backend_id, prestashop_id, **kwargs):
+def import_record(env, model_name, backend_id, prestashop_id, **kwargs):
     """ Import a record from PrestaShop """
-    backend = session.env['prestashop.backend'].browse(backend_id)
-    env = backend.get_environment(model_name, session=session)
     importer = env.get_connector_unit(PrestashopImporter)
     return importer.run(prestashop_id, **kwargs)

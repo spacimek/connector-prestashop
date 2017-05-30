@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import models, fields, api
-from odoo.addons.connector.session import ConnectorSession
+from odoo.addons.connector.connector import ConnectorEnvironment
 from ...unit.importer import import_record
 
 
@@ -27,12 +27,11 @@ class PrestashopBinding(models.AbstractModel):
 
     @api.multi
     def resync(self):
-        session = ConnectorSession.from_env(self.env)
         func = import_record
         if self.env.context.get('connector_delay'):
             func = import_record.delay
         for record in self:
-            func(session, self._name, record.backend_id.id,
+            func(self.env, self._name, record.backend_id.id,
                  record.prestashop_id)
         return True
 

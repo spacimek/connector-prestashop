@@ -8,8 +8,8 @@ import psycopg2
 
 
 from odoo import _, exceptions
-from odoo.addons.connector.queue.job import job
-from odoo.addons.connector.queue.job import related_action
+from odoo.addons.queue_job.job import job
+from odoo.addons.queue_job.job import related_action
 from odoo.addons.connector.unit.synchronizer import Exporter
 from odoo.addons.connector.exception import RetryableJobError
 from .mapper import TranslationPrestashopExportMapper

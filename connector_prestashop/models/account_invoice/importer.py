@@ -4,7 +4,7 @@
 from odoo import _, fields
 
 from odoo.addons.connector.exception import MappingError
-from odoo.addons.connector.queue.job import job
+from odoo.addons.queue_job.job import job
 from odoo.addons.connector.unit.mapper import (
     mapping,
     ImportMapper,

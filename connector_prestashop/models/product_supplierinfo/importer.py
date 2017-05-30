@@ -3,7 +3,7 @@
 
 from odoo import fields
 from odoo.addons.connector.exception import FailedJobError
-from odoo.addons.connector.queue.job import job
+from odoo.addons.queue_job.job import job
 from odoo.addons.connector.unit.mapper import ImportMapper, mapping
 
 from ...unit.backend_adapter import PrestaShopCRUDAdapter

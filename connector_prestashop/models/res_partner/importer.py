@@ -4,7 +4,7 @@
 import re
 
 from odoo import fields, _
-from odoo.addons.connector.queue.job import job
+from odoo.addons.queue_job.job import job
 from odoo.addons.connector.unit.mapper import (
     ImportMapper,
     mapping,

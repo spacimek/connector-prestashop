@@ -7,7 +7,7 @@ from contextlib import closing, contextmanager
 import openerp
 from odoo import _
 
-from odoo.addons.connector.queue.job import job
+from odoo.addons.queue_job.job import job
 from odoo.addons.connector.unit.synchronizer import Importer
 from odoo.addons.connector.connector import ConnectorUnit, Binder
 from odoo.addons.connector.session import ConnectorSession

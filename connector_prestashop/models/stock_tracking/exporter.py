@@ -32,7 +32,7 @@ class PrestashopTrackingExporter(Exporter):
         self.binding = self.model.browse(binding_id)
         tracking = self._get_tracking()
         if tracking:
-            prestashop_order_id = self.binder.to_backend(self.binding)
+            prestashop_order_id = self.binder.to_external(self.binding)
             filters = {
                 'filter[id_order]': prestashop_order_id,
             }

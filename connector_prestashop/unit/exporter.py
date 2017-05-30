@@ -48,7 +48,7 @@ class PrestashopBaseExporter(Exporter):
         """
         self.binding_id = binding_id
         self.binding = self._get_binding()
-        self.prestashop_id = self.binder.to_backend(self.binding)
+        self.prestashop_id = self.binder.to_external(self.binding)
         result = self._run(*args, **kwargs)
 
         self.binder.bind(self.prestashop_id, self.binding)
@@ -206,7 +206,7 @@ class PrestashopExporter(PrestashopBaseExporter):
 
         rel_binder = self.binder_for(binding_model)
 
-        if not rel_binder.to_backend(binding) or force_sync:
+        if not rel_binder.to_external(binding) or force_sync:
             exporter = self.unit_for(
                 exporter_class or PrestashopExporter, binding_model)
             exporter.run(binding.id)

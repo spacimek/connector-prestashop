@@ -47,7 +47,7 @@ class ProductCategoryMapper(ImportMapper):
     def parent_id(self, record):
         if record['id_parent'] == '0':
             return {}
-        category = self.binder_for('prestashop.product.category').to_odoo(
+        category = self.binder_for('prestashop.product.category').to_internal(
             record['id_parent'], unwrap=True)
         return {
             'parent_id': category.id,
@@ -96,7 +96,7 @@ class ProductCategoryImporter(TranslatableRecordImporter):
                     'Error: %s'
                 )
                 binder = self.binder_for()
-                category = binder.to_odoo(record['id'])
+                category = binder.to_internal(record['id'])
                 if category:
                     name = category.name
                 else:

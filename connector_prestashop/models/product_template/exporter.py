@@ -15,7 +15,7 @@ class ProductInventoryExporter(Exporter):
 
     def get_filter(self, template):
         binder = self.binder_for()
-        prestashop_id = binder.to_backend(template.id)
+        prestashop_id = binder.to_external(template.id)
         return {
             'filter[id_product]': prestashop_id,
             'filter[id_product_attribute]': 0

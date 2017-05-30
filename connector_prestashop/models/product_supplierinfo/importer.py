@@ -74,7 +74,7 @@ class SupplierImporter(PrestashopImporter):
     def _after_import(self, binding):
         super(SupplierImporter, self)._after_import(binding)
         binder = self.binder_for()
-        ps_id = binder.to_backend(binding)
+        ps_id = binder.to_external(binding)
         import_batch(
             self.session,
             'prestashop.product.supplierinfo',
@@ -108,14 +108,14 @@ class SupplierInfoMapper(ImportMapper):
     @mapping
     def name(self, record):
         binder = self.binder_for('prestashop.supplier')
-        partner = binder.to_odoo(record['id_supplier'], unwrap=True)
+        partner = binder.to_internal(record['id_supplier'], unwrap=True)
         return {'name': partner.id}
 
     @mapping
     def product_id(self, record):
         if record['id_product_attribute'] != '0':
             binder = self.binder_for('prestashop.product.combination')
-            product = binder.to_odoo(
+            product = binder.to_internal(
                 record['id_product_attribute'],
                 unwrap=True,
             )
@@ -125,7 +125,7 @@ class SupplierInfoMapper(ImportMapper):
     @mapping
     def product_tmpl_id(self, record):
         binder = self.binder_for('prestashop.product.template')
-        template = binder.to_odoo(record['id_product'], unwrap=True)
+        template = binder.to_internal(record['id_product'], unwrap=True)
         return {'product_tmpl_id': template.id}
 
     @mapping

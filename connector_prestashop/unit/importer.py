@@ -53,7 +53,7 @@ class PrestashopBaseImporter(Importer):
         if importer_class is None:
             importer_class = PrestashopImporter
         binder = self.binder_for(binding_model)
-        if always or not binder.to_odoo(prestashop_id):
+        if always or not binder.to_internal(prestashop_id):
             importer = self.unit_for(importer_class, model=binding_model)
             importer.run(prestashop_id, **kwargs)
 
@@ -101,7 +101,7 @@ class PrestashopImporter(PrestashopBaseImporter):
 
     def _get_binding(self):
         """Return the openerp id from the prestashop id"""
-        return self.binder.to_odoo(self.prestashop_id)
+        return self.binder.to_internal(self.prestashop_id)
 
     def _context(self, **kwargs):
         return dict(self.session.context, connector_no_export=True, **kwargs)
@@ -217,7 +217,7 @@ class PrestashopImporter(PrestashopBaseImporter):
             # later (and the new T3 will be aware of the category X
             # from the its inception).
             binder = new_connector_env.get_connector_unit(Binder)
-            if binder.to_odoo(self.prestashop_id):
+            if binder.to_internal(self.prestashop_id):
                 raise RetryableJobError(
                     'Concurrent error. The job will be retried later',
                     seconds=RETRY_WHEN_CONCURRENT_DETECTED,
@@ -346,7 +346,7 @@ class DirectBatchImporter(BatchImporter):
     def _import_record(self, record):
         """ Import the record directly """
         import_record(
-            self.session,
+            self.connector_env,
             self.model._name,
             self.backend_record.id,
             record
@@ -360,7 +360,7 @@ class DelayedBatchImporter(BatchImporter):
     def _import_record(self, record, **kwargs):
         """ Delay the import of the records"""
         import_record.delay(
-            self.session,
+            self.env,
             self.model._name,
             self.backend_record.id,
             record,
@@ -388,7 +388,7 @@ class TranslatableRecordImporter(PrestashopImporter):
 
     def _get_odoo_language(self, prestashop_id):
         language_binder = self.binder_for('prestashop.res.lang')
-        erp_language = language_binder.to_odoo(prestashop_id)
+        erp_language = language_binder.to_internal(prestashop_id)
         return erp_language
 
     def find_each_language(self, record):

@@ -7,7 +7,6 @@ from contextlib import contextmanager
 from odoo import models, fields, api, exceptions, _
 
 from odoo.addons.connector.connector import ConnectorEnvironment
-from odoo.addons.connector.connector import ConnectorEnvironment
 from ...unit.importer import import_batch, import_record
 from ...unit.auto_matching_importer import AutoMatchingImporter
 from ...unit.backend_adapter import GenericAdapter, api_handle_errors
@@ -121,11 +120,10 @@ class PrestashopBackend(models.Model):
     def _default_pricelist_id(self):
         return self.env['product.pricelist'].search([], limit=1)
 
-    @contextmanager
     @api.multi
     def get_environment(self, model_name,):
         self.ensure_one()
-        yield ConnectorEnvironment(self, self.env, model_name)
+        return ConnectorEnvironment(self, model_name)
 
     @api.multi
     def synchronize_metadata(self):

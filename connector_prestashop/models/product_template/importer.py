@@ -205,7 +205,7 @@ class TemplateMapper(ImportMapper):
         product_categories = self.env['product.category'].browse()
         binder = self.binder_for('prestashop.product.category')
         for ps_category in categories:
-            product_categories |= binder.to_odoo(
+            product_categories |= binder.to_internal(
                 ps_category['id'],
                 unwrap=True,
             )
@@ -216,7 +216,7 @@ class TemplateMapper(ImportMapper):
         if not int(record['id_category_default']):
             return
         binder = self.binder_for('prestashop.product.category')
-        category = binder.to_odoo(
+        category = binder.to_internal(
             record['id_category_default'],
             unwrap=True,
         )
@@ -246,7 +246,7 @@ class TemplateMapper(ImportMapper):
         # if record['id_tax_rules_group'] == '0':
         #     return {}
         binder = self.binder_for('prestashop.account.tax.group')
-        tax_group = binder.to_odoo(
+        tax_group = binder.to_internal(
             record['id_tax_rules_group'],
             unwrap=True,
         )
@@ -375,9 +375,9 @@ class ProductInventoryImporter(PrestashopImporter):
         record = self.prestashop_record
         if record['id_product_attribute'] == '0':
             binder = self.binder_for('prestashop.product.template')
-            return binder.to_odoo(record['id_product'])
+            return binder.to_internal(record['id_product'])
         binder = self.binder_for('prestashop.product.combination')
-        return binder.to_odoo(record['id_product_attribute'])
+        return binder.to_internal(record['id_product_attribute'])
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""

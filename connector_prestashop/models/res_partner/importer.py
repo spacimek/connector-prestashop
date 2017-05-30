@@ -39,7 +39,7 @@ class PartnerImportMapper(ImportMapper):
     @mapping
     def pricelist(self, record):
         binder = self.binder_for('prestashop.groups.pricelist')
-        pricelist = binder.to_odoo(record['id_default_group'], unwrap=True)
+        pricelist = binder.to_internal(record['id_default_group'], unwrap=True)
         if not pricelist:
             return {}
         return {'property_product_pricelist': pricelist.id}
@@ -67,7 +67,7 @@ class PartnerImportMapper(ImportMapper):
         partner_category_bindings = self.env[model_name].browse()
         binder = self.binder_for(model_name)
         for group in groups:
-            partner_category_bindings |= binder.to_odoo(group['id'])
+            partner_category_bindings |= binder.to_internal(group['id'])
 
         result = {'group_ids': [(6, 0, partner_category_bindings.ids)],
                   'category_id': [(4, b.odoo_id.id)
@@ -83,7 +83,7 @@ class PartnerImportMapper(ImportMapper):
         binder = self.binder_for('prestashop.res.lang')
         erp_lang = None
         if record.get('id_lang'):
-            erp_lang = binder.to_odoo(record['id_lang'])
+            erp_lang = binder.to_internal(record['id_lang'])
         if not erp_lang:
             erp_lang = self.env.ref('base.lang_en')
         return {'lang': erp_lang.code}
@@ -121,7 +121,7 @@ class ResPartnerImporter(PrestashopImporter):
     def _after_import(self, binding):
         super(ResPartnerImporter, self)._after_import(binding)
         binder = self.binder_for()
-        ps_id = binder.to_backend(binding)
+        ps_id = binder.to_external(binding)
         import_batch.delay(
             self.session,
             'prestashop.address',
@@ -160,7 +160,7 @@ class AddressImportMapper(ImportMapper):
     @mapping
     def parent_id(self, record):
         binder = self.binder_for('prestashop.res.partner')
-        parent = binder.to_odoo(record['id_customer'], unwrap=True)
+        parent = binder.to_internal(record['id_customer'], unwrap=True)
         return {'parent_id': parent.id}
 
     @mapping
@@ -179,7 +179,7 @@ class AddressImportMapper(ImportMapper):
     def country(self, record):
         if record.get('id_country'):
             binder = self.binder_for('prestashop.res.country')
-            country = binder.to_odoo(record['id_country'], unwrap=True)
+            country = binder.to_internal(record['id_country'], unwrap=True)
             return {'country_id': country.id}
         return {}
 

@@ -42,11 +42,6 @@ class CarrierImportMapper(ImportMapper):
         return {'product_id': product.id}
 
     @mapping
-    def partner_id(self, record):
-        default_partner = self.backend_record.company_id.partner_id
-        return {'partner_id': default_partner.id}
-
-    @mapping
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
 

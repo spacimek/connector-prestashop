@@ -106,7 +106,7 @@ class PrestashopProductTemplate(models.Model):
     on_sale = fields.Boolean(string='Show on sale icon')
     wholesale_price = fields.Float(
         string='Cost Price',
-        digits_compute=dp.get_precision('Product Price'),
+        digits=dp.get_precision('Product Price'),
     )
 
     @api.multi

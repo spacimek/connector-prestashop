@@ -4,6 +4,7 @@
 from odoo import api, fields, models
 from odoo.addons import decimal_precision as dp
 
+from odoo.addons.queue_job.job import job
 from ...unit.backend_adapter import GenericAdapter
 from ...backend import prestashop
 
@@ -124,6 +125,21 @@ class PrestashopProductTemplate(models.Model):
             ('usage', '=', 'internal'),
         ])
         return self.with_context(location=locations.ids).qty_available
+
+    @job(default_channel='root.prestashop')
+    def import_products(self, backend, since_date=None, **kwargs):
+        filters = None
+        if since_date:
+            filters = {'date': '1', 'filter[date_upd]': '>[%s]' % (since_date)}
+        now_fmt = fields.Datetime.now()
+        self.env['prestashop.product.category'].with_delay(
+            priority=15
+        ).import_batch(backend=backend, filters=filters, **kwargs)
+        self.env['prestashop.product.template'].with_delay(
+            priority=15
+        ).import_batch(backend, filters, **kwargs)
+        backend.import_products_since = now_fmt
+        return True
 
 
 @prestashop

@@ -122,13 +122,9 @@ class ResPartnerImporter(PrestashopImporter):
         super(ResPartnerImporter, self)._after_import(binding)
         binder = self.binder_for()
         ps_id = binder.to_external(binding)
-        import_batch.delay(
-            self.session,
-            'prestashop.address',
-            self.backend_record.id,
-            filters={'filter[id_customer]': '%d' % (ps_id,)},
-            priority=10,
-        )
+        self.env['prestashop.address'].with_delay(priority=10).import_batch(
+            backend=self.backend_record,
+            filters={'filter[id_customer]': '%d' % (ps_id,)})
 
 
 @prestashop
@@ -235,8 +231,7 @@ class AddressBatchImporter(DelayedBatchImporter):
 
 
 @job(default_channel='root.prestashop')
-def import_customers_since(
-        session, backend_id, since_date=None, **kwargs):
+def import_customers_since(env, since_date=None, **kwargs):
     """ Prepare the import of partners modified on PrestaShop """
     filters = None
     if since_date:
@@ -244,23 +239,10 @@ def import_customers_since(
             'date': '1',
             'filter[date_upd]': '>[%s]' % since_date}
     now_fmt = fields.Datetime.now()
-    result = import_batch(
-        session,
-        'prestashop.res.partner.category',
-        backend_id,
-        filters,
-        **kwargs
-    ) or ''
-    result += import_batch(
-        session,
-        'prestashop.res.partner',
-        backend_id,
-        filters,
-        priority=15,
-        **kwargs
-    ) or ''
-
-    session.env['prestashop.backend'].browse(backend_id).write({
-        'import_partners_since': now_fmt,
-    })
+    result = import_batch(env, filters, **kwargs) or ''
+    result += import_batch(env, filters, priority=15, **kwargs) or ''
+    env.backend_record.import_partners_since = now_fmt
+    # env['prestashop.backend'].browse(backend_id).write({
+    #     'import_partners_since': now_fmt,
+    # })
     return result

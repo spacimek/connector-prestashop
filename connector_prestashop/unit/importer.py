@@ -345,12 +345,9 @@ class DirectBatchImporter(BatchImporter):
 
     def _import_record(self, record):
         """ Import the record directly """
-        import_record(
-            self.connector_env,
-            self.model._name,
-            self.backend_record.id,
-            record
-        )
+        self.env[self.model._name].with_delay().import_record(
+            backend=self.backend_record,
+            prestashop_id=record)
 
 
 class DelayedBatchImporter(BatchImporter):
@@ -359,13 +356,10 @@ class DelayedBatchImporter(BatchImporter):
 
     def _import_record(self, record, **kwargs):
         """ Delay the import of the records"""
-        import_record.delay(
-            self.env,
-            self.model._name,
-            self.backend_record.id,
-            record,
-            **kwargs
-        )
+        self.env[self.model._name].with_delay().import_record(
+            backend=self.backend_record,
+            prestashop_id=record,
+            **kwargs)
 
 
 class TranslatableRecordImporter(PrestashopImporter):
@@ -495,9 +489,9 @@ class TranslatableRecordImporter(PrestashopImporter):
                 connector_no_export=True,
             ).write(map_record.values())
 
-
+# TODO: Remove when all imports has been changed
 @job(default_channel='root.prestashop')
-def import_batch(env, model_name, backend_id, filters=None, **kwargs):
+def import_batch(env, filters=None, **kwargs):
     """ Prepare a batch import of records from PrestaShop """
     importer = env.get_connector_unit(BatchImporter)
     return importer.run(filters=filters, **kwargs)

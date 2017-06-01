@@ -29,6 +29,8 @@ class ProductInventoryExporter(Exporter):
         adapter.export_quantity(filter, int(template.quantity))
 
 
+# TODO: Remove because it has been moved to prestashop product template and
+# prestashop product combination
 @job(default_channel='root.prestashop')
 def export_inventory(session, model_name, record_id, fields=None, **kwargs):
     """ Export the inventory configuration and quantity of a product. """

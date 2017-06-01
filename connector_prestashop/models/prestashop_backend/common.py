@@ -184,7 +184,7 @@ class PrestashopBackend(models.Model):
     def import_products(self):
         for backend_record in self:
             since_date = backend_record.import_products_since
-            self.env['prestashop.product.template'].with_delay(
+            backend_record.env['prestashop.product.template'].with_delay(
                 priority=10).import_products(backend_record, since_date)
         return True
 
@@ -197,9 +197,11 @@ class PrestashopBackend(models.Model):
 
     @api.multi
     def update_product_stock_qty(self):
-        session = ConnectorSession.from_env(self.env)
         for backend_record in self:
-            export_product_quantities.delay(session, backend_record.id)
+            backend_record.env['prestashop.product.template']\
+                .with_delay().export_product_quantities(backend=backend_record)
+            backend_record.env['prestashop.product.product']\
+                .with_delay().export_product_quantities(backend=backend_record)
         return True
 
     @api.multi

@@ -7,6 +7,7 @@ from odoo.addons import decimal_precision as dp
 from odoo.addons.queue_job.job import job
 from ...unit.backend_adapter import GenericAdapter
 from ...backend import prestashop
+from exporter import ProductInventoryExporter
 
 import logging
 
@@ -140,6 +141,20 @@ class PrestashopProductTemplate(models.Model):
         ).import_batch(backend, filters, **kwargs)
         backend.import_products_since = now_fmt
         return True
+
+    @job(default_channel='root.prestashop')
+    def export_inventory(self, backend, fields=None, **kwargs):
+        """ Export the inventory configuration and quantity of a product. """
+        env = backend.get_environment(self._name)
+        inventory_exporter = env.get_connector_unit(ProductInventoryExporter)
+        return inventory_exporter.run(self.id, fields, **kwargs)
+
+    @api.model
+    @job(default_channel='root.prestashop')
+    def export_product_quantities(self, backend):
+        self.search([
+            ('backend_id', 'in', self.env.backend.ids),
+        ]).recompute_prestashop_qty()
 
 
 @prestashop

@@ -14,7 +14,8 @@
         "product",
         "product_multi_category",  # oca/product-attribute
         "connector_ecommerce",  # oca/connector-ecommerce
-        "product_multi_image",  # oca/product-attribute
+        # "product_multi_image",  # oca/product-attribute
+        "base_multi_image", # product_multi_image is not ported to v10, but seems it's not needed
         "purchase",
         "product_variant_supplierinfo",  # oca/product-variant
         # TODO: perhaps not needed:
